@@ -1,0 +1,66 @@
+﻿@model IEnumerable<VancouverSports.ViewModel.ProductPicked>
+
+@{
+    ViewBag.Title = "ViewCart";
+}
+
+<div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-2">@Html.DisplayNameFor(model => model.ProductID)</div>
+    <div class="col-xs-2">@Html.DisplayNameFor(model => model.ProductName)</div>
+    <div class="col-xs-2">@Html.DisplayNameFor(model => model.QtyOrdered)</div>
+    <div class="col-xs-2">@Html.DisplayNameFor(model => model.Price)</div>
+    <div class="col-xs-2">Amount</div>
+</div>
+@using (Html.BeginForm("ViewCart", "Home", FormMethod.Post))
+{
+    decimal subtotal = 0;
+    int index = -1;
+    foreach (var item in Model)
+    {
+        <div class="row">
+            @{index++;}
+            <div class="col-xs-2">@Html.ActionLink("Remove", "Remove", new {item.ProductID})</div>
+
+            <div class="col-xs-2">
+                #@Html.DisplayFor(modelItem => item.ProductID)
+                @{ var id = "item[" + index + "].ProductID"; }
+                <input type="hidden" name=@Html.Raw(id) value=@item.ProductID />
+                
+            </div>
+
+            <div class="col-xs-2">
+                @Html.DisplayFor(modelItem => item.ProductName)
+                <input type="hidden" name="item[@index.ToString()].ProductName" value="@item.ProductName" />
+            </div>
+
+            <div class="col-xs-2">
+                <input type="number" name="item[@index.ToString()].QtyOrdered" min="1" max="100" value="@item.QtyOrdered"/>
+            </div>
+
+            <div class="col-xs-2">
+                @{
+                string price = item.Price.ToString("C");
+                }
+                @Html.DisplayFor(modelItem => price)
+                <input type="hidden" name="item[@index.ToString()].Price" value="@item.Price"/>
+            </div>
+
+            <div class="col-xs-2">
+                @{
+                  decimal amount = item.Price * item.QtyOrdered;
+                  subtotal += amount;
+                  string displayAmount = amount.ToString("C");
+                }
+                @Html.Raw(@displayAmount)
+            </div>
+        </div>
+    }
+    <input class="btn btn-default btn=success" id="btnToLink" type="submit"/>
+}
+
+
+ 
+        <div class="btn btn-default btn-success" id="displayBlock">@Html.ActionLink("Go to Checkout", "ThankYou", new { id = 0 })</div>
+        <div class="btn btn-default btn-success">@Html.ActionLink("Cancel Order", "ThankYou", new { id = 1 })</div>
+

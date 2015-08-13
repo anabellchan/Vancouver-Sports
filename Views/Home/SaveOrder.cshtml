@@ -1,0 +1,95 @@
+﻿@model IEnumerable<VancouverSports.ViewModel.ProductPicked>
+
+@{
+    ViewBag.Title = "SaveOrder";
+    ViewBag.SubTotal = (decimal)0;
+    ViewBag.Tax = (decimal)0.07;
+}
+<h1 style="text-align:'center'">Order Saved</h1>
+<div class="panel panel-primary"></div>
+<!--<div class="row alert-info">-->
+    <div class="panel panel-heading col-xs-4">@Html.DisplayNameFor(model => model.ProductID)</div>
+    <div class="panel panel-heading col-xs-2">@Html.DisplayNameFor(model => model.ProductName)</div>
+    <div class="panel panel-heading col-xs-2">@Html.DisplayNameFor(model => model.QtyOrdered)</div>
+    <div class="panel panel-heading col-xs-2">@Html.DisplayNameFor(model => model.Price)</div>
+    <div class="panel panel-heading col-xs-2">Amount</></div>
+</div>
+@using (Html.BeginForm("ViewCart", "Home", FormMethod.Post))
+{
+    decimal subtotal = 0;
+    int index = -1;
+    foreach (var item in Model)
+    {
+        <div class="panel panel-primary">
+            @{index++;}
+            <div class="panel panel-content col-xs-4" id="orderDetails">
+                #@Html.DisplayFor(modelItem => item.ProductID)
+
+            </div>
+
+            <div class="panel panel-content col-xs-2" id="orderDetails">
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </div>
+
+            <div class="panel panel-content col-xs-2" id="orderDetails">
+                @Html.DisplayFor(modelItem => item.QtyOrdered)
+            </div>
+
+            <div class="panel panel-content col-xs-2" id="orderDetails">
+                @{
+        string price = item.Price.ToString("C");
+                }
+                @Html.DisplayFor(modelItem => price)
+            </div>
+            <div class="panel panel-content col-xs-2" style="text-align:right" id="orderDetails">
+                @{
+        decimal amount = item.Price * item.QtyOrdered;
+        subtotal += amount;
+        string displayAmount = amount.ToString("C");
+                }
+                @Html.Raw(@displayAmount)
+            </div>
+
+
+
+        </div>
+    }
+
+    ViewBag.SubTotal = subtotal;
+}
+
+<div class="panel panel-content col-lg-12 col-md-12 col-xs-12">
+    <div class="panel-body col-xs-2">Sub-total</div>
+    <div class="panel-body col-xs-2" style="text-align:right">
+        @{
+            string displaySubtotal = ViewBag.Subtotal.ToString("C");
+        }
+        @Html.Raw(@displaySubtotal)
+    </div>
+</div>
+
+<div class="panel panel-content col-lg-12 col-md-12 col-xs-12">
+    <div class="panel-body col-xs-2">7% Tax</div>
+    <div class="panel-body col-xs-2" style="text-align:right">
+        @{
+            decimal tax = ViewBag.SubTotal * ViewBag.Tax;
+            string displayTax = tax.ToString("C");
+        }
+        @Html.Raw(@displayTax)
+    </div>
+
+</div>
+<div class="panel panel-content col-lg-12 col-md-12 col-xs-12">
+    <div class="panel-body col-xs-2">Total</div>
+    <div class="panel-body col-xs-2" style="text-align:right">
+        @{
+            decimal total = ViewBag.SubTotal + tax;
+            string displayTotal = total.ToString("C");
+        }
+        @Html.Raw(@displayTotal)
+    </div>
+
+</div>
+
+<div class="btn btn-default btn-success " >@Html.ActionLink("Go to Checkout", "ThankYou", new { id = 0 })</div>
+<div class="btn btn-default btn-success">@Html.ActionLink("Cancel Order", "ThankYou", new { id = 1 })</div>

@@ -1,0 +1,53 @@
+﻿@model VancouverSports.Product
+
+@{
+    ViewBag.Title = "Add";
+}
+
+
+<div>
+    <div class="col-sm-12">
+        @{
+            ViewBag.filename = Model.productID + ".jpg";   
+        }
+
+        @using (Html.BeginForm("AddProduct", "Home", FormMethod.Post, new { @class = "navbar-form"}))
+        {
+            <a href="#" class="thumbnail">
+                <img src="~/Content/img/@ViewBag.filename" class="img-responsive">
+            </a>
+            <p class="prodDetail">#@Html.DisplayFor(modelItem => Model.productID)</p>
+            @Html.HiddenFor(model => model.productID)
+            <p class="prodDetail">@Html.DisplayFor(modelItem => Model.productName)</p>
+            @Html.HiddenFor(model => model.productName)
+            <p class="prodDetail">$@Html.DisplayFor(modelItem => Model.price)</p>
+            @Html.HiddenFor(model => model.price)
+            <p class="prodDetail">Qty:</p>
+            <input type="number" name="qty" id="qty" min="1" max="100" value=@ViewBag.qty>
+            <input type="submit" id="submit" value="Update" />
+        }
+        
+    </div>
+
+    </div>
+<p>
+    
+    @Html.ActionLink("Cancel", "Cancel", null, new {type="button"})
+</p>
+<style>
+    #qty {
+        display: block;
+        text-align: center;
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #submit {
+        clear: both;
+        display: block;
+        text-align: center;
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>

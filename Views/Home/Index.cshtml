@@ -1,0 +1,28 @@
+﻿@model IEnumerable<VancouverSports.Product>
+
+@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+    ViewBag.Title = "Home";
+}
+
+
+@foreach (var item in Model)
+{
+    <div class="col-sm-3">
+        @{
+            ViewBag.file = @item.productID;
+            ViewBag.filename = @item.productID + ".jpg";
+            }
+        <a href="~/Home/AddProduct?productID=@ViewBag.file" class="thumbnail">           
+            <img src="~/Content/img/@ViewBag.filename"  class="img-responsive">
+        </a>
+
+        <p>#@Html.DisplayFor(modelItem => item.productID)</p>
+        <p>@Html.DisplayFor(modelItem => item.productName)</p>
+        <p>$@Html.DisplayFor(modelItem => item.price)</p>
+        <p>@Html.ActionLink("Add to Cart", "AddProduct", new { productID = item.productID })</p>
+    </div>
+
+
+}
+
